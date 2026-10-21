@@ -18,6 +18,21 @@ env/
 .coverage
 htmlcov/
 
+# Model and Data Artifacts
+models/*.joblib
+models/*.pkl
+models/*.bin
+models/*.pt
+models/*.onnx
+!models/README.md
+
+data/*.parquet
+data/*.csv
+data/*.tsv
+data/cache/
+!data/README.md
+!data/code_mixed_test_cases.json
+
 # Editor and OS files
 .vscode/
 .idea/

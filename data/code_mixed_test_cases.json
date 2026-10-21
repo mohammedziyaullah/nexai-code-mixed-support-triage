@@ -1,0 +1,317 @@
+[
+  {
+    "id": "cm_01",
+    "language": "Hinglish",
+    "message": "Mera order abhi tak deliver nahi hua, courier status stuck dikha raha hai 3 din se",
+    "expected_intent": "track_order",
+    "expected_category": "ORDER",
+    "expected_urgency": "HIGH",
+    "notes": "Delay in delivery with stuck tracking status triggers high operational urgency."
+  },
+  {
+    "id": "cm_02",
+    "language": "Hinglish",
+    "message": "Bhai please yeh order cancel kardo jaldi, galti se double item add ho gaya tha",
+    "expected_intent": "cancel_order",
+    "expected_category": "ORDER",
+    "expected_urgency": "HIGH",
+    "notes": "Time-sensitive cancellation request before shipment."
+  },
+  {
+    "id": "cm_03",
+    "language": "Hinglish",
+    "message": "Account me login nahi ho raha hai, password reset link bhejo",
+    "expected_intent": "recover_password",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "MEDIUM",
+    "notes": "Standard credential recovery request."
+  },
+  {
+    "id": "cm_04",
+    "language": "Hinglish",
+    "message": "Maine payment kiya par account se paisa kat gaya aur order place nahi hua",
+    "expected_intent": "payment_issue",
+    "expected_category": "PAYMENT",
+    "expected_urgency": "HIGH",
+    "notes": "Financial dispute and deducted funds without order creation."
+  },
+  {
+    "id": "cm_05",
+    "language": "Hinglish",
+    "message": "Invoice download karne ka option kahan milega? PDF copy chahiye tax filing ke liye",
+    "expected_intent": "get_invoice",
+    "expected_category": "INVOICE",
+    "expected_urgency": "LOW",
+    "notes": "Informational request for invoice documentation."
+  },
+  {
+    "id": "cm_06",
+    "language": "Hinglish",
+    "message": "Mera refund amount kab tak account me aayega? Bank statement me abhi tak reflect nahi hua",
+    "expected_intent": "track_refund",
+    "expected_category": "REFUND",
+    "expected_urgency": "HIGH",
+    "notes": "Financial status inquiry regarding delayed refund."
+  },
+  {
+    "id": "cm_07",
+    "language": "Hinglish",
+    "message": "Delivery boy ne galat address pe parcel drop kar diya, please human agent se baat karao turant",
+    "expected_intent": "contact_human_agent",
+    "expected_category": "CONTACT",
+    "expected_urgency": "HIGH",
+    "notes": "Delivery mishap demanding immediate human intervention."
+  },
+  {
+    "id": "cm_08",
+    "language": "Hinglish",
+    "message": "Mujhe apna shipping address change karna hai dispatched hone se pehle",
+    "expected_intent": "change_shipping_address",
+    "expected_category": "SHIPPING",
+    "expected_urgency": "HIGH",
+    "notes": "Time-critical address change request before package dispatch."
+  },
+  {
+    "id": "cm_09",
+    "language": "Hinglish",
+    "message": "Order cancel karne par koi cancellation charges lagenge kya?",
+    "expected_intent": "check_cancellation_fee",
+    "expected_category": "CANCEL",
+    "expected_urgency": "LOW",
+    "notes": "Policy clarification prior to cancellation."
+  },
+  {
+    "id": "cm_10",
+    "language": "Hinglish",
+    "message": "Bahut hi ghatiya service hai, package completely damaged condition me mila",
+    "expected_intent": "complaint",
+    "expected_category": "FEEDBACK",
+    "expected_urgency": "HIGH",
+    "notes": "Severe product damage grievance."
+  },
+  {
+    "id": "cm_11",
+    "language": "Hinglish",
+    "message": "Product ka quality bahut accha laga, review kahan submit kar sakte hain?",
+    "expected_intent": "review",
+    "expected_category": "FEEDBACK",
+    "expected_urgency": "LOW",
+    "notes": "Positive customer feedback submission query."
+  },
+  {
+    "id": "cm_12",
+    "language": "Hinglish",
+    "message": "New account create karne me OTP issue aa raha hai baar baar",
+    "expected_intent": "registration_problems",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "MEDIUM",
+    "notes": "Onboarding technical difficulty."
+  },
+  {
+    "id": "cm_13",
+    "language": "Hinglish",
+    "message": "Kya aap COD ya UPI dono payment accept karte ho checkout pe?",
+    "expected_intent": "check_payment_methods",
+    "expected_category": "PAYMENT",
+    "expected_urgency": "LOW",
+    "notes": "General payment method informational inquiry."
+  },
+  {
+    "id": "cm_14",
+    "language": "Hinglish",
+    "message": "Weekly promotional email newsletter unsubscribe karna hai, settings batao",
+    "expected_intent": "newsletter_subscription",
+    "expected_category": "SUBSCRIPTION",
+    "expected_urgency": "LOW",
+    "notes": "Subscription preference adjustment."
+  },
+  {
+    "id": "cm_15",
+    "language": "Hinglish",
+    "message": "Standard delivery me kitne din lagte hain Bangalore se Delhi ke liye?",
+    "expected_intent": "delivery_period",
+    "expected_category": "DELIVERY",
+    "expected_urgency": "LOW",
+    "notes": "Informational delivery timeline query."
+  },
+  {
+    "id": "cm_16",
+    "language": "Hinglish",
+    "message": "Mera email id aur phone number profile me edit karna hai",
+    "expected_intent": "edit_account",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "LOW",
+    "notes": "Routine profile information update."
+  },
+  {
+    "id": "cm_17",
+    "language": "Hinglish",
+    "message": "Purana account permanently delete karna chahta hoon privacy reasons ke liye",
+    "expected_intent": "delete_account",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "MEDIUM",
+    "notes": "Account closure inquiry requiring compliance validation."
+  },
+  {
+    "id": "cm_18",
+    "language": "Hinglish",
+    "message": "Order place karne ka try kar raha hu par checkout button kaam nahi kar raha",
+    "expected_intent": "place_order",
+    "expected_category": "ORDER",
+    "expected_urgency": "HIGH",
+    "notes": "Checkout blocker directly impeding transaction completion."
+  },
+  {
+    "id": "cm_19",
+    "language": "Tanglish",
+    "message": "En order delivery innum varala, track panna tracking link update aagala",
+    "expected_intent": "track_order",
+    "expected_category": "ORDER",
+    "expected_urgency": "HIGH",
+    "notes": "Delivery delay with unresponsive tracking update."
+  },
+  {
+    "id": "cm_20",
+    "language": "Tanglish",
+    "message": "Romba urgent, intha order-a cancel pannunga please, wrong item select panniten",
+    "expected_intent": "cancel_order",
+    "expected_category": "ORDER",
+    "expected_urgency": "HIGH",
+    "notes": "Immediate cancellation request due to incorrect item selection."
+  },
+  {
+    "id": "cm_21",
+    "language": "Tanglish",
+    "message": "Account login panna mudiyala, password maranthuten, reset link anupunga",
+    "expected_intent": "recover_password",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "MEDIUM",
+    "notes": "Password reset request in Tanglish."
+  },
+  {
+    "id": "cm_22",
+    "language": "Tanglish",
+    "message": "Bank account-la irunthu money deduct aayiduchu aana order confirm aagala, romba tension-a irukku",
+    "expected_intent": "payment_issue",
+    "expected_category": "PAYMENT",
+    "expected_urgency": "HIGH",
+    "notes": "Deducted payment with unconfirmed order causing customer distress."
+  },
+  {
+    "id": "cm_23",
+    "language": "Tanglish",
+    "message": "Last month purchase panna items-ku tax invoice eppadi download panrathu?",
+    "expected_intent": "get_invoice",
+    "expected_category": "INVOICE",
+    "expected_urgency": "LOW",
+    "notes": "Download request for historical purchase invoice."
+  },
+  {
+    "id": "cm_24",
+    "language": "Tanglish",
+    "message": "Refund initiated nu sonnenga aana 5 days aachu innum bank account-ku varala",
+    "expected_intent": "track_refund",
+    "expected_category": "REFUND",
+    "expected_urgency": "HIGH",
+    "notes": "Delayed refund trace request after 5 business days."
+  },
+  {
+    "id": "cm_25",
+    "language": "Tanglish",
+    "message": "Customer care support agent kitta direct-a call la pesa mudiyuma? Chatbot purinjuka maatenguthu",
+    "expected_intent": "contact_human_agent",
+    "expected_category": "CONTACT",
+    "expected_urgency": "HIGH",
+    "notes": "Bot failure requesting direct human agent escalation."
+  },
+  {
+    "id": "cm_26",
+    "language": "Tanglish",
+    "message": "Delivery address mathanum, dispatch aagurathukulla update panna mudiyuma?",
+    "expected_intent": "change_shipping_address",
+    "expected_category": "SHIPPING",
+    "expected_urgency": "HIGH",
+    "notes": "Pre-dispatch destination address update."
+  },
+  {
+    "id": "cm_27",
+    "language": "Tanglish",
+    "message": "Order cancel panna ethavathu cancellation fee pidipaangala?",
+    "expected_intent": "check_cancellation_fee",
+    "expected_category": "CANCEL",
+    "expected_urgency": "LOW",
+    "notes": "Pre-cancellation fee inquiry."
+  },
+  {
+    "id": "cm_28",
+    "language": "Tanglish",
+    "message": "Item damaged-a deliver pannitaanga, customer support complaint register pannanum",
+    "expected_intent": "complaint",
+    "expected_category": "FEEDBACK",
+    "expected_urgency": "HIGH",
+    "notes": "Damaged goods delivery complaint."
+  },
+  {
+    "id": "cm_29",
+    "language": "Tanglish",
+    "message": "Shirt fitting romba nalla irukku, product review feedback share pannanum",
+    "expected_intent": "review",
+    "expected_category": "FEEDBACK",
+    "expected_urgency": "LOW",
+    "notes": "Positive product review inquiry."
+  },
+  {
+    "id": "cm_30",
+    "language": "Tanglish",
+    "message": "Pudhu account open panna try panren aana OTP receive aagala",
+    "expected_intent": "registration_problems",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "MEDIUM",
+    "notes": "Registration blocker due to non-receipt of OTP."
+  },
+  {
+    "id": "cm_31",
+    "language": "Tanglish",
+    "message": "Express delivery options ethavathu irukka same-day reach aaga?",
+    "expected_intent": "delivery_options",
+    "expected_category": "DELIVERY",
+    "expected_urgency": "LOW",
+    "notes": "Delivery option availability inquiry."
+  },
+  {
+    "id": "cm_32",
+    "language": "Tanglish",
+    "message": "Return policy rules enna? Damaged product return panna ethana naal time irukku?",
+    "expected_intent": "check_refund_policy",
+    "expected_category": "REFUND",
+    "expected_urgency": "MEDIUM",
+    "notes": "Return policy window clarification."
+  },
+  {
+    "id": "cm_33",
+    "language": "Tanglish",
+    "message": "Daily promotional marketing emails vara koodathu, newsletter unsubscribe pannunga",
+    "expected_intent": "newsletter_subscription",
+    "expected_category": "SUBSCRIPTION",
+    "expected_urgency": "LOW",
+    "notes": "Marketing email opt-out request."
+  },
+  {
+    "id": "cm_34",
+    "language": "Tanglish",
+    "message": "Personal details and contact number update panna account settings katanum",
+    "expected_intent": "edit_account",
+    "expected_category": "ACCOUNT",
+    "expected_urgency": "LOW",
+    "notes": "Profile contact update instruction query."
+  },
+  {
+    "id": "cm_35",
+    "language": "Tanglish",
+    "message": "GPay illa card payment accept panveengala website la?",
+    "expected_intent": "check_payment_methods",
+    "expected_category": "PAYMENT",
+    "expected_urgency": "LOW",
+    "notes": "Supported digital payment method query."
+  }
+]
