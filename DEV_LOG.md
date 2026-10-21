@@ -30,3 +30,18 @@
   - Added `tests/test_audit_corrections.py` covering product-dissatisfaction regression (Tanglish & Hinglish damage complaints $\rightarrow$ `complaint`, `HIGH` urgency), strict threshold boundaries ($<, ==, >$), draft reply completeness across all 27 intents, benchmark independence, and Streamlit app cache integration.
   - Executed automated test suite: 40 tests across 9 test modules, 100% passing offline in ~3.1 seconds.
   - Validated submission readiness: `.env.example` verified with placeholders only; binary models and local caches confirmed excluded via `.gitignore`; prepared 5-minute video outline, slide deck structure, and social media announcement templates in `README.md`.
+
+## 22 October 2026
+
+- Executed Complete Dataset Verification, Training Pipeline Audit, and Triage Invariant Correction (Phases 1-9):
+  - Verified official Hugging Face dataset `bitext/Bitext-customer-support-llm-chatbot-training-dataset` cached locally (`~/.cache/huggingface/` snapshot: 19.2 MB raw CSV, 19.5 MB Arrow cache, CDLA-Sharing-1.0 license, Bitext Innovations S.L. attribution).
+  - Confirmed 26,872 samples across 11 categories and 27 intents; zero corrupt rows, 0 nulls.
+  - Investigated root cause of product-dissatisfaction misclassification (`place_order` at 77.2%): generic defect/malfunction tokens (`bekaar`, `defective`, `fake`, `broken`, `kharaab`, `mosam`) were OOV in Bitext, allowing the isolated token `product` (+4.32 weight to `place_order`) to dominate.
+  - Added generalized linguistic normalization rules for product dissatisfaction and defect indicators without hardcoding individual messages.
+  - Added lexical urgency triggers (`defective`, `broken`, `fake`, `wrong item`, `bekaar`, `kharab`, `mosam`).
+  - Formalized explicit `triage_verdict` (`"ESCALATE_TO_HUMAN"` vs. `"AUTOMATED_RESOLUTION"`) across `classifier.predict()`, `triage_message()`, and `app.py`.
+  - Enforced strict invariant: when `confidence < confidence_threshold`, predictions cannot display Automated Resolution, the unverified status is highlighted in UI, and the draft reply defaults to safe intake response (`DEFAULT_FALLBACK_DRAFT`).
+  - Confirmed 35-case benchmark remains strictly held out with zero lexical overlap: benchmark intent accuracy rose to 91.43% (32/35 correct; 94.44% Hinglish, 88.24% Tanglish) while 99.39% in-domain Bitext accuracy was preserved.
+  - Resolved 39-vs-40 test count discrepancy by eliminating redundant standalone function in `tests/test_app_structure.py`.
+  - Added `tests/test_triage_verdict_audit.py` containing 9 regression tests for boundary conditions, complaint handling, and high-urgency escalation.
+  - Executed automated test suite: exactly 48 tests discovered and 100% passing across both `pytest` and `python -m unittest` in ~3.1 seconds.

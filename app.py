@@ -173,12 +173,20 @@ def main():
                 m_col1, m_col2, m_col3, m_col4 = st.columns(4)
 
                 with m_col1:
-                    st.metric(
-                        label="Predicted Intent",
-                        value=result["predicted_intent"],
-                        delta=f"Category: {result['predicted_category']}",
-                        delta_color="off",
-                    )
+                    if result["confidence"] < confidence_threshold:
+                        st.metric(
+                            label="Predicted Intent (Unverified)",
+                            value=f"⚠️ {result['predicted_intent']}",
+                            delta=f"Category: {result['predicted_category']} (Below Threshold)",
+                            delta_color="inverse",
+                        )
+                    else:
+                        st.metric(
+                            label="Predicted Intent",
+                            value=result["predicted_intent"],
+                            delta=f"Category: {result['predicted_category']}",
+                            delta_color="off",
+                        )
 
                 with m_col2:
                     conf_val = result["confidence"]
@@ -206,8 +214,13 @@ def main():
                     st.caption(f"Rule: {result['urgency_reason']}")
 
                 with m_col4:
-                    needs_esc = result["needs_escalation"]
-                    if needs_esc:
+                    # Enforce strict invariant: below-threshold predictions can NEVER display Automated Resolution
+                    is_escalated = (
+                        result["needs_escalation"]
+                        or (result["confidence"] < confidence_threshold)
+                        or (result.get("triage_verdict") == "ESCALATE_TO_HUMAN")
+                    )
+                    if is_escalated:
                         st.error("🚨 ESCALATE TO HUMAN")
                     else:
                         st.success("🤖 AUTOMATED RESOLUTION")
@@ -217,7 +230,21 @@ def main():
                 # Draft reply card
                 st.markdown("---")
                 st.subheader("📝 Suggested Draft Response")
-                st.info("⚠️ **Human Review Required:** The following draft is generated based on the predicted intent. Review and edit before replying to the customer.")
+                if result["confidence"] < confidence_threshold:
+                    st.warning(
+                        "⚠️ **Low Confidence — Human Triage Required:** The customer intent could not be identified with sufficient certainty "
+                        "(below configured threshold). A general intake acknowledgment is pre-filled below for human agent review."
+                    )
+                elif result["urgency"] == "HIGH":
+                    st.warning(
+                        "🚨 **High Operational Urgency — Human Oversight Required:** This query has been flagged with high urgency. "
+                        "Review and edit the suggested response before communicating with the customer."
+                    )
+                else:
+                    st.info(
+                        "🤖 **Automated Resolution Candidate:** Confident prediction with standard urgency. "
+                        "Review and edit before replying to the customer."
+                    )
 
                 edited_reply = st.text_area(
                     "Draft Reply (Editable):",

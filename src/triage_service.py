@@ -181,8 +181,10 @@ def triage_message(
             "predicted_category": "UNKNOWN",
             "confidence": 0.0,
             "urgency": "LOW",
+            "urgency_score": 0.20,
             "urgency_reason": "No message provided",
             "needs_escalation": True,
+            "triage_verdict": "ESCALATE_TO_HUMAN",
             "escalation_reason": "Empty message submitted",
             "draft_reply": DEFAULT_FALLBACK_DRAFT,
             "is_fallback": True,
@@ -204,6 +206,7 @@ def triage_message(
             "urgency_score": urgency_res["urgency_score"],
             "urgency_reason": f"{urgency_res['urgency_reason']} (Fallback rule)",
             "needs_escalation": True,
+            "triage_verdict": "ESCALATE_TO_HUMAN",
             "escalation_reason": "Model artifact unavailable; conservatively routed to human triage",
             "draft_reply": DEFAULT_FALLBACK_DRAFT,
             "is_fallback": True,
@@ -224,17 +227,24 @@ def triage_message(
         needs_escalation = False
         reasons: List[str] = []
 
+        # Authoritative decision logic:
+        # Strictly below threshold (<): must escalate to human and cannot display Automated Resolution.
+        # At or above threshold (>=): confidence alone does not escalate.
         if confidence < confidence_threshold:
             needs_escalation = True
             reasons.append(
                 f"Confidence ({confidence:.1%}) is below threshold ({confidence_threshold:.1%})"
             )
+            # Low confidence predictions are unverified: provide safe intake draft
+            draft_reply = DEFAULT_FALLBACK_DRAFT
+        else:
+            draft_reply = get_draft_reply(predicted_intent)
 
         if urgency == "HIGH":
             needs_escalation = True
             reasons.append("High operational urgency requires human oversight")
 
-        draft_reply = get_draft_reply(predicted_intent)
+        triage_verdict = "ESCALATE_TO_HUMAN" if needs_escalation else "AUTOMATED_RESOLUTION"
 
         return {
             "is_valid": True,
@@ -247,6 +257,7 @@ def triage_message(
             "urgency_score": triage_res["urgency_score"],
             "urgency_reason": urgency_reason,
             "needs_escalation": needs_escalation,
+            "triage_verdict": triage_verdict,
             "escalation_reason": " | ".join(reasons) if reasons else "Prediction confident and standard priority",
             "draft_reply": draft_reply,
             "is_fallback": False,
@@ -290,6 +301,7 @@ def run_benchmark_suite(
                 "urgency_correct": urgency_correct,
                 "confidence": res["confidence"],
                 "needs_escalation": res["needs_escalation"],
+                "triage_verdict": res["triage_verdict"],
                 "escalation_reason": res["escalation_reason"],
                 "draft_reply": res["draft_reply"],
                 "notes": item.get("notes", ""),

@@ -42,6 +42,10 @@ HIGH_URGENCY_KEYWORDS = [
     r"\bstolen\b",
     r"\bhacked\b",
     r"\bdamaged\b",
+    r"\bdefective\b",
+    r"\bbroken\b",
+    r"\bfake\b",
+    r"\bwrong (?:item|product)\b",
     r"\bdouble charged\b",
     r"\bmoney deduct(?:ed)?\b",
     r"\bhuman agent\b",
@@ -53,6 +57,8 @@ HIGH_URGENCY_KEYWORDS = [
     r"\bpareshan\b",
     r"\bghatiya\b",
     r"\bkharaab\b",
+    r"\bkharab\b",
+    r"\bbekaar\b",
     r"\bmadad karo\b",
     # Tanglish
     r"\bseekiram\b",
@@ -62,6 +68,7 @@ HIGH_URGENCY_KEYWORDS = [
     r"\bromba urgent\b",
     r"\bthappu\b",
     r"\bseri illa\b",
+    r"\bmosam\b",
 ]
 
 MEDIUM_URGENCY_KEYWORDS = [
@@ -299,6 +306,8 @@ class TriageClassifier:
         if urgency_res["urgency"] == "HIGH":
             escalation_reasons.append("High operational urgency requires human oversight")
 
+        triage_verdict = "ESCALATE_TO_HUMAN" if needs_escalation else "AUTOMATED_RESOLUTION"
+
         return {
             "message": text,
             "predicted_intent": intent_res["intent"],
@@ -308,6 +317,7 @@ class TriageClassifier:
             "urgency_score": urgency_res["urgency_score"],
             "urgency_reason": urgency_res["urgency_reason"],
             "needs_escalation": needs_escalation,
+            "triage_verdict": triage_verdict,
             "escalation_reason": " | ".join(escalation_reasons) if escalation_reasons else "Prediction confident and standard priority",
         }
 

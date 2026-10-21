@@ -76,23 +76,26 @@ class TestAuditCorrections(unittest.TestCase):
         self.assertIn("not arrived track order status", normalized)
 
     def test_product_dissatisfaction_regression(self):
-        """Regression test: dissatisfaction and damage grievances classify as complaint with HIGH urgency."""
-        # Hinglish dissatisfaction
-        hinglish_query = "Package completely damaged condition me mila, bahut hi ghatiya service hai"
-        res_hi = triage_message(hinglish_query, self.classifier, confidence_threshold=0.40)
-        self.assertEqual(res_hi["predicted_intent"], "complaint")
-        self.assertEqual(res_hi["predicted_category"], "FEEDBACK")
-        self.assertEqual(res_hi["urgency"], "HIGH")
-        self.assertTrue(res_hi["needs_escalation"])
-        self.assertIn("complaint", res_hi["draft_reply"].lower())
+        """Regression test: dissatisfaction, defects, and damage grievances classify as complaint with HIGH urgency."""
+        complaint_queries = [
+            ("Package completely damaged condition me mila, bahut hi ghatiya service hai", "Hinglish damage/poor service"),
+            ("Bahut bekaar product bheja hai", "Hinglish substandard item"),
+            ("Yeh item kharaab nikla, bilkul kaam nahi kar raha", "Hinglish defective item"),
+            ("Item damaged-a deliver pannitaanga, customer support complaint register pannanum", "Tanglish damaged item/complaint"),
+            ("Product work aagala, romba mosama irukku", "Tanglish malfunctioning item"),
+            ("I received a defective and completely broken item", "English broken/defective product"),
+        ]
 
-        # Tanglish dissatisfaction
-        tanglish_query = "Item damaged-a deliver pannitaanga, customer support complaint register pannanum"
-        res_ta = triage_message(tanglish_query, self.classifier, confidence_threshold=0.40)
-        self.assertEqual(res_ta["predicted_intent"], "complaint")
-        self.assertEqual(res_ta["predicted_category"], "FEEDBACK")
-        self.assertEqual(res_ta["urgency"], "HIGH")
-        self.assertTrue(res_ta["needs_escalation"])
+        for query, label in complaint_queries:
+            with self.subTest(case=label):
+                res = triage_message(query, self.classifier, confidence_threshold=0.40)
+                self.assertEqual(res["predicted_intent"], "complaint")
+                self.assertEqual(res["predicted_category"], "FEEDBACK")
+                self.assertEqual(res["urgency"], "HIGH")
+                self.assertTrue(res["needs_escalation"])
+                self.assertEqual(res["triage_verdict"], "ESCALATE_TO_HUMAN")
+                self.assertNotEqual(res["triage_verdict"], "AUTOMATED_RESOLUTION")
+                self.assertIn("complaint", res["draft_reply"].lower())
 
     def test_confidence_threshold_boundaries(self):
         """Verify strict threshold behavior: strictly below (<) must escalate; at or above (>=) must not."""
@@ -109,20 +112,28 @@ class TestAuditCorrections(unittest.TestCase):
             res_below["needs_escalation"],
             f"Expected escalation when conf {actual_conf} < threshold {threshold_above}",
         )
+        self.assertEqual(res_below["triage_verdict"], "ESCALATE_TO_HUMAN")
+        self.assertNotEqual(res_below["triage_verdict"], "AUTOMATED_RESOLUTION")
         self.assertIn("below threshold", res_below["escalation_reason"].lower())
+        # Low confidence predictions must use safe intake fallback draft
+        self.assertEqual(res_below["draft_reply"], DEFAULT_FALLBACK_DRAFT)
 
         # 2. At threshold: set threshold exactly equal to confidence
         res_at = triage_message(inquiry, self.classifier, confidence_threshold=actual_conf)
-        # Since actual_conf < threshold is False, confidence check alone does not escalate
+        # Since actual_conf < threshold is False and urgency is LOW, confidence check alone does not escalate
         self.assertFalse(
             res_at["needs_escalation"],
             "At boundary (conf == threshold), confidence check should not escalate",
         )
+        self.assertEqual(res_at["triage_verdict"], "AUTOMATED_RESOLUTION")
+        self.assertNotEqual(res_at["draft_reply"], DEFAULT_FALLBACK_DRAFT)
 
         # 3. Strictly above threshold: set threshold lower than actual confidence
         threshold_below = max(0.10, actual_conf - 0.10)
         res_above = triage_message(inquiry, self.classifier, confidence_threshold=threshold_below)
         self.assertFalse(res_above["needs_escalation"])
+        self.assertEqual(res_above["triage_verdict"], "AUTOMATED_RESOLUTION")
+        self.assertNotEqual(res_above["draft_reply"], DEFAULT_FALLBACK_DRAFT)
 
     def test_draft_reply_relevance_across_all_27_intents(self):
         """Verify every intent in the 27-intent taxonomy has a tailored, non-empty draft response."""

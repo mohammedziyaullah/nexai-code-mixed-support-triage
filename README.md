@@ -25,15 +25,16 @@ The **Code-Mixed Support Triage Assistant** provides an end-to-end intelligent t
 | Metric / Evaluation Set | Baseline Pipeline (Before Normalization) | Audited & Corrected Pipeline (After Normalization) | Relative Delta |
 | :--- | :--- | :--- | :--- |
 | **Bitext Held-out Test Split** (5,375 English samples) | Accuracy: **99.39%**<br>Macro F1: **0.9939** | Accuracy: **99.39%**<br>Macro F1: **0.9939** | Preserved 100% in-domain English performance |
-| **Code-Mixed Benchmark** (35 Tanglish/Hinglish cases) | Accuracy: **68.57%** (24/35)<br>Macro F1: **0.5333** | Accuracy: **82.86%** (29/35)<br>Macro F1: **0.7246** | **+14.29% Accuracy**<br>**+0.191 Macro F1** |
-| - *Hinglish Subset (18 cases)* | Intent Accuracy: 66.67% | Intent Accuracy: **83.33%** | +16.66% Accuracy |
-| - *Tanglish Subset (17 cases)* | Intent Accuracy: 70.59% | Intent Accuracy: **82.35%** | +11.76% Accuracy |
+| **Code-Mixed Benchmark** (35 Tanglish/Hinglish cases) | Accuracy: **68.57%** (24/35)<br>Macro F1: **0.5333** | Accuracy: **91.43%** (32/35)<br>Macro F1: **0.8485** | **+22.86% Accuracy**<br>**+0.315 Macro F1** |
+| - *Hinglish Subset (18 cases)* | Intent Accuracy: 66.67% (12/18) | Intent Accuracy: **94.44%** (17/18) | +27.77% Accuracy |
+| - *Tanglish Subset (17 cases)* | Intent Accuracy: 70.59% (12/17) | Intent Accuracy: **88.24%** (15/17) | +17.65% Accuracy |
 | **Urgency Accuracy (Heuristic vs. Annotations)** | **77.14%** | **77.14%** | Consistent rule-derived triage |
 | **Human Escalation Rate on Benchmark** | 37.1% (13/35) | 34.3% (12/35) | High-risk/low-confidence queries escalated |
 
 ### Verified Dataset & Split Breakdown
 - **Source:** Hugging Face `bitext/Bitext-customer-support-llm-chatbot-training-dataset`
-- **License:** CDLA-Sharing-1.0
+- **Attribution:** Bitext Innovations S.L. (https://www.bitext.com)
+- **License:** CDLA-Sharing-1.0 (Community Data License Agreement – Sharing, Version 1.0)
 - **Total Validated Rows:** 26,872 (0 nulls, 0 corrupt records)
 - **Train Set (80% Stratified Split):** 21,497 samples
 - **Held-Out Test Set (20% Stratified Split):** 5,375 samples
@@ -153,7 +154,8 @@ nexai-code-mixed-support-triage/
     ├── test_normalizer.py             # Linguistic normalization unit tests
     ├── test_regression_order_status.py# Order status Tanglish regression tests
     ├── test_train_pipeline.py         # Offline pipeline evaluation tests
-    └── test_triage_service.py         # Triage service, fallback, and draft reply tests
+    ├── test_triage_service.py         # Triage service, fallback, and draft reply tests
+    └── test_triage_verdict_audit.py   # Strict threshold boundaries & complaint regression tests
 ```
 
 ---

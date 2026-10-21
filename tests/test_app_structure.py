@@ -17,16 +17,8 @@ EXPECTED_PROJECT_FILES = [
 ]
 
 
-def test_app_structure():
-    """Verify that all core scaffold files exist in the project root."""
-    root_dir = Path(__file__).resolve().parent.parent
-    for rel_path in EXPECTED_PROJECT_FILES:
-        target_path = root_dir / rel_path
-        assert target_path.is_file(), f"Expected project file is missing: {rel_path}"
-
-
 class TestProjectStructure(unittest.TestCase):
-    """Unittest test case to allow running tests without third-party test runners."""
+    """Verify that all core scaffold files exist in the project root."""
 
     def test_expected_files_exist(self):
         root_dir = Path(__file__).resolve().parent.parent
