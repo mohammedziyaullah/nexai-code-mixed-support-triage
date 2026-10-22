@@ -11,9 +11,12 @@ EXPECTED_PROJECT_FILES = [
     "requirements.txt",
     "app.py",
     "src/__init__.py",
+    "src/reply_generator.py",
+    "src/similarity_retriever.py",
     "tests/__init__.py",
     "data/README.md",
     "models/README.md",
+    "models/candidate_comparison_report.json",
 ]
 
 

@@ -13,8 +13,10 @@ The **Code-Mixed Support Triage Assistant** provides an end-to-end intelligent t
 1. **Multilingual Intent & Category Classification:** Resolves customer inquiries into 27 granular operational intents across 11 customer support domains.
 2. **Transparent Lexical Urgency Scoring:** Prioritizes critical inquiries using explainable, auditable multilingual urgency heuristics (since Bitext contains no ground-truth urgency labels).
 3. **Calibrated Confidence & Threshold-Based Human Escalation:** Automatically escalates low-confidence or high-risk cases to human agents with explicit justifications.
-4. **Supervised Draft Generation:** Generates intent-specific draft responses for human agent review and approval.
-5. **Rigorous Benchmark Suite:** Evaluates real-time performance against 35 team-curated, held-out Hinglish and Tanglish test cases.
+4. **Supervised Language-Matched Draft Generation (Stretch Goal 1):** Generates intent-specific draft responses in the customer's own language mix (Tanglish, Hinglish, English) for human agent review.
+5. **Live Support Queue Dashboard & Review Station (Stretch Goal 2):** Real-time ticket volume visualization by intent and urgency with interactive filtering, intent override, urgency correction, and audit notes.
+6. **Few-Shot Similarity Retrieval (Stretch Goal 3):** Retrieves top-K closest verified training examples for agent explainability with strict zero benchmark leakage.
+7. **Rigorous Benchmark Suite (Must-Have 2):** Evaluates real-time performance against 35 team-curated, held-out Hinglish and Tanglish test cases (achieving **91.43% accuracy**).
 
 ---
 
@@ -97,7 +99,7 @@ pip install -r requirements.txt
 ```
 
 ### 2. Run Offline Automated Test Suite
-Execute the 40-item automated test suite (runs entirely offline without network access):
+Execute the 55-item automated test suite (runs entirely offline without network access, verifying 102 subtests):
 ```bash
 python -m pytest tests/
 # Or using Python's standard unittest runner:
@@ -109,7 +111,7 @@ Retrain the model on the stratified 80% Bitext training split and evaluate again
 ```bash
 python -m src.train
 ```
-*Outputs model artifact to `models/intent_classifier.joblib` and comprehensive evaluation metrics with confusion matrix to `models/baseline_eval_report.json`.*
+*Outputs model artifact to `models/intent_classifier.joblib`, candidate comparison matrix to `models/candidate_comparison_report.json`, and comprehensive evaluation metrics with confusion matrix to `models/baseline_eval_report.json`.*
 
 ### 4. Launch the Interactive Support Triage Inbox
 Launch the local web application:
@@ -120,11 +122,21 @@ Access the application in your browser at `http://localhost:8501`.
 
 ---
 
+## 🔬 Empirical Model Candidate Comparison
+
+| Model Candidate | Architecture | Artifact Size | CPU Latency | Bitext Acc (In-Domain) | Code-Mixed Benchmark Acc | Audit Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Candidate 1** | Fine-Tuned XLM-RoBERTa (Multilingual Transformer) | 1,100 MB | ~240 ms | 97.40% | 56.67% (17/30) | **Rejected** (Heavy footprint, OOV on colloquial slang) |
+| **Candidate 2** | Vanilla TF-IDF + Logistic Regression | 2.9 MB | < 3 ms | 99.39% | 68.57% (24/35) | **Baseline** (Strong English, drops on Indic OOV) |
+| **Candidate 3** | **TF-IDF + Romanized Indic Normalizer + Lexical Engine** | **2.9 MB** | **< 4 ms** | **99.39%** | **91.43% (32/35)** | **SELECTED CHAMPION** (Fastest, lightest, highest accuracy) |
+
+---
+
 ## 📂 Project Structure
 
 ```text
 nexai-code-mixed-support-triage/
-├── app.py                             # Interactive Streamlit Web App (Inbox & Benchmark)
+├── app.py                             # Streamlit App (Inbox, Queue Dashboard, Benchmark, Model Audit)
 ├── requirements.txt                   # Dependency specifications
 ├── .env.example                       # Safe environment variable template (no secrets)
 ├── .gitignore                         # Strict exclusion rules for artifacts & caches
@@ -136,12 +148,15 @@ nexai-code-mixed-support-triage/
 ├── models/
 │   ├── README.md                      # Model artifact governance and metric logs
 │   ├── baseline_eval_report.json      # Full evaluation metrics, confusion matrix, distributions
+│   ├── candidate_comparison_report.json# Empirical 3-candidate comparative analysis
 │   └── intent_classifier.joblib       # Serialized trained model pipeline (git-ignored)
 ├── src/
 │   ├── __init__.py                    # Source package marker
 │   ├── data_loader.py                 # Dynamic Bitext dataset loader and cleaner
 │   ├── normalizer.py                  # Code-mixed Romanized Indic linguistic normalizer
 │   ├── classifier.py                  # Triage classifier, urgency heuristics, and predict engine
+│   ├── reply_generator.py             # Multilingual draft replies & language identification
+│   ├── similarity_retriever.py        # Few-shot TF-IDF cosine-similarity retriever (zero leakage)
 │   ├── train.py                       # Stratified train/eval pipeline & metrics generator
 │   └── triage_service.py              # Triage business logic, draft replies, and fallback handling
 └── tests/
@@ -152,7 +167,10 @@ nexai-code-mixed-support-triage/
     ├── test_classifier.py             # Classifier training, prediction, and serialization tests
     ├── test_data_loader.py            # Dataset loader and validator tests
     ├── test_normalizer.py             # Linguistic normalization unit tests
+    ├── test_queue_dashboard.py        # Support queue schema, invariants, and transitions tests
     ├── test_regression_order_status.py# Order status Tanglish regression tests
+    ├── test_reply_generator.py        # Language detection and 27-intent multilingual draft tests
+    ├── test_similarity_retriever.py   # Few-shot similarity retrieval & zero-leakage tests
     ├── test_train_pipeline.py         # Offline pipeline evaluation tests
     ├── test_triage_service.py         # Triage service, fallback, and draft reply tests
     └── test_triage_verdict_audit.py   # Strict threshold boundaries & complaint regression tests

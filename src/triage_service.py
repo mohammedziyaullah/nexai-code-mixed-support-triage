@@ -15,6 +15,11 @@ from src.classifier import (
     DEFAULT_CONFIDENCE_THRESHOLD,
     TriageClassifier,
 )
+from src.reply_generator import (
+    FALLBACK_DRAFTS,
+    detect_language,
+    get_multilingual_draft_reply,
+)
 
 DEFAULT_MODEL_PATH = Path("models") / "intent_classifier.joblib"
 DEFAULT_BENCHMARK_PATH = Path("data") / "code_mixed_test_cases.json"
@@ -144,11 +149,12 @@ def get_draft_reply(intent: Optional[str]) -> str:
     return INTENT_DRAFT_REPLIES.get(intent.strip().lower(), DEFAULT_FALLBACK_DRAFT)
 
 
-def load_classifier_safe(model_path: Path = DEFAULT_MODEL_PATH) -> Optional[TriageClassifier]:
+def load_classifier_safe(model_path: Path | str = DEFAULT_MODEL_PATH) -> Optional[TriageClassifier]:
     """Safely load trained classifier artifact without crashing if missing or corrupted."""
     try:
-        if model_path.is_file():
-            return TriageClassifier.load(model_path)
+        path_obj = Path(model_path)
+        if path_obj.is_file():
+            return TriageClassifier.load(path_obj)
     except Exception:
         pass
     return None
@@ -177,6 +183,7 @@ def triage_message(
             "is_valid": False,
             "error": "Message cannot be empty or pure whitespace.",
             "message": "",
+            "detected_language": "English",
             "predicted_intent": "UNKNOWN",
             "predicted_category": "UNKNOWN",
             "confidence": 0.0,
@@ -187,8 +194,11 @@ def triage_message(
             "triage_verdict": "ESCALATE_TO_HUMAN",
             "escalation_reason": "Empty message submitted",
             "draft_reply": DEFAULT_FALLBACK_DRAFT,
+            "multilingual_drafts": FALLBACK_DRAFTS.copy(),
             "is_fallback": True,
         }
+
+    detected_lang = detect_language(clean_message)
 
     # If classifier is not loaded, use conservative fallback
     if classifier is None:
@@ -199,6 +209,7 @@ def triage_message(
             "is_valid": True,
             "error": None,
             "message": clean_message,
+            "detected_language": detected_lang,
             "predicted_intent": "MODEL_UNAVAILABLE",
             "predicted_category": "GENERAL",
             "confidence": 0.0,
@@ -208,7 +219,12 @@ def triage_message(
             "needs_escalation": True,
             "triage_verdict": "ESCALATE_TO_HUMAN",
             "escalation_reason": "Model artifact unavailable; conservatively routed to human triage",
-            "draft_reply": DEFAULT_FALLBACK_DRAFT,
+            "draft_reply": FALLBACK_DRAFTS.get(detected_lang, DEFAULT_FALLBACK_DRAFT),
+            "multilingual_drafts": {
+                "English": FALLBACK_DRAFTS["English"],
+                "Hinglish": FALLBACK_DRAFTS["Hinglish"],
+                "Tanglish": FALLBACK_DRAFTS["Tanglish"],
+            },
             "is_fallback": True,
         }
 
@@ -237,8 +253,18 @@ def triage_message(
             )
             # Low confidence predictions are unverified: provide safe intake draft
             draft_reply = DEFAULT_FALLBACK_DRAFT
+            multilingual_drafts = {
+                "English": FALLBACK_DRAFTS["English"],
+                "Hinglish": FALLBACK_DRAFTS["Hinglish"],
+                "Tanglish": FALLBACK_DRAFTS["Tanglish"],
+            }
         else:
-            draft_reply = get_draft_reply(predicted_intent)
+            draft_reply = get_multilingual_draft_reply(predicted_intent, language=detected_lang)
+            multilingual_drafts = {
+                "English": get_multilingual_draft_reply(predicted_intent, "English"),
+                "Hinglish": get_multilingual_draft_reply(predicted_intent, "Hinglish"),
+                "Tanglish": get_multilingual_draft_reply(predicted_intent, "Tanglish"),
+            }
 
         if urgency == "HIGH":
             needs_escalation = True
@@ -250,6 +276,7 @@ def triage_message(
             "is_valid": True,
             "error": None,
             "message": clean_message,
+            "detected_language": detected_lang,
             "predicted_intent": predicted_intent,
             "predicted_category": predicted_category,
             "confidence": confidence,
@@ -260,6 +287,7 @@ def triage_message(
             "triage_verdict": triage_verdict,
             "escalation_reason": " | ".join(reasons) if reasons else "Prediction confident and standard priority",
             "draft_reply": draft_reply,
+            "multilingual_drafts": multilingual_drafts,
             "is_fallback": False,
         }
     finally:
@@ -268,14 +296,15 @@ def triage_message(
 
 def run_benchmark_suite(
     classifier: Optional[TriageClassifier],
-    benchmark_path: Path = DEFAULT_BENCHMARK_PATH,
+    benchmark_path: Path | str = DEFAULT_BENCHMARK_PATH,
     confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
 ) -> List[Dict[str, Any]]:
     """Execute triage on all benchmark test cases and return structured comparison records."""
-    if not benchmark_path.is_file():
-        raise FileNotFoundError(f"Benchmark file not found at {benchmark_path}")
+    path_obj = Path(benchmark_path)
+    if not path_obj.is_file():
+        raise FileNotFoundError(f"Benchmark file not found at {path_obj}")
 
-    with open(benchmark_path, "r", encoding="utf-8") as f:
+    with open(path_obj, "r", encoding="utf-8") as f:
         cases = json.load(f)
 
     results: List[Dict[str, Any]] = []
