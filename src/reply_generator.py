@@ -216,6 +216,71 @@ FALLBACK_DRAFTS: Dict[LanguageType, str] = {
 }
 
 
+MAP_61_TO_27: Dict[str, str] = {
+    "search_product": "place_order",
+    "product_recommendation": "place_order",
+    "product_availability": "place_order",
+    "product_price_inquiry": "check_invoice",
+    "product_comparison": "place_order",
+    "product_specifications": "place_order",
+    "product_compatibility": "place_order",
+    "cancel_order": "cancel_order",
+    "modify_order_items": "change_order",
+    "order_confirmation_missing": "track_order",
+    "order_status_inquiry": "track_order",
+    "track_order": "track_order",
+    "delivery_fee_inquiry": "delivery_options",
+    "delayed_delivery": "delivery_period",
+    "missing_delivery": "complaint",
+    "change_shipping_address": "change_shipping_address",
+    "delivery_options": "delivery_options",
+    "payment_methods_inquiry": "check_payment_methods",
+    "payment_failed": "payment_issue",
+    "payment_deducted_order_failed": "payment_issue",
+    "duplicate_payment": "payment_issue",
+    "promo_code_issue": "payment_issue",
+    "unexpected_charge": "check_invoice",
+    "refund_policy_inquiry": "check_refund_policy",
+    "request_refund": "get_refund",
+    "refund_status_inquiry": "track_refund",
+    "damaged_product_received": "complaint",
+    "defective_product_received": "complaint",
+    "return_request": "get_refund",
+    "exchange_request": "change_order",
+    "wrong_product_received": "complaint",
+    "missing_item_in_package": "complaint",
+    "return_pickup_request": "get_refund",
+    "warranty_claim": "complaint",
+    "login_issue": "registration_problems",
+    "recover_password": "recover_password",
+    "otp_not_received": "registration_problems",
+    "account_locked": "registration_problems",
+    "change_email_address": "edit_account",
+    "change_phone_number": "edit_account",
+    "suspected_account_hack": "recover_password",
+    "suspected_scam": "complaint",
+    "unauthorized_transaction": "payment_issue",
+    "privacy_policy_inquiry": "contact_customer_service",
+    "general_complaint": "complaint",
+    "unresolved_issue": "complaint",
+    "escalate_complaint": "complaint",
+    "request_human_agent": "contact_human_agent",
+    "request_supervisor": "contact_human_agent",
+    "checkout_error": "payment_issue",
+    "app_crash": "registration_problems",
+    "notification_issue": "edit_account",
+    "subscription_cancellation": "cancel_order",
+    "loyalty_points_missing": "check_invoice",
+    "subscription_signup": "newsletter_subscription",
+    "marketing_opt_out": "newsletter_subscription",
+    "greeting": "contact_customer_service",
+    "gratitude": "review",
+    "unclear_message": "contact_customer_service",
+    "language_preference": "contact_customer_service",
+    "contact_customer_service": "contact_customer_service",
+}
+
+
 def get_multilingual_draft_reply(
     intent: Optional[str],
     language: LanguageType = "English",
@@ -223,7 +288,7 @@ def get_multilingual_draft_reply(
     """Retrieve draft reply formatted in the target language for a specific intent.
 
     Args:
-        intent: Canonical Bitext intent string.
+        intent: Canonical Bitext intent or 61-intent taxonomy string.
         language: 'English', 'Hinglish', or 'Tanglish'.
 
     Returns:
@@ -234,6 +299,11 @@ def get_multilingual_draft_reply(
 
     intent_key = intent.strip().lower()
     drafts_for_intent = MULTILINGUAL_INTENT_DRAFTS.get(intent_key)
+
+    # Fallback to mapped canonical intent if fine-grained 61-intent is provided
+    if not drafts_for_intent and intent_key in MAP_61_TO_27:
+        canonical_key = MAP_61_TO_27[intent_key]
+        drafts_for_intent = MULTILINGUAL_INTENT_DRAFTS.get(canonical_key)
 
     if not drafts_for_intent:
         return FALLBACK_DRAFTS.get(language, FALLBACK_DRAFTS["English"])

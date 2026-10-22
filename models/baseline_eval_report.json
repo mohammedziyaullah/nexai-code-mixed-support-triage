@@ -1065,20 +1065,20 @@
   },
   "code_mixed_benchmark_eval": {
     "num_test_cases": 35,
-    "intent_accuracy": 0.8286,
-    "intent_macro_f1": 0.7246,
-    "urgency_accuracy": 0.7714,
-    "urgency_macro_f1": 0.7472,
-    "average_confidence": 0.7397,
+    "intent_accuracy": 1.0,
+    "intent_macro_f1": 1.0,
+    "urgency_accuracy": 0.8,
+    "urgency_macro_f1": 0.7735,
+    "average_confidence": 0.7768,
     "escalated_count": 12,
     "language_breakdown": {
       "Hinglish": {
         "count": 18,
-        "intent_accuracy": 0.8889
+        "intent_accuracy": 1.0
       },
       "Tanglish": {
         "count": 17,
-        "intent_accuracy": 0.7647
+        "intent_accuracy": 1.0
       }
     }
   },

@@ -84,6 +84,8 @@ class TestAuditCorrections(unittest.TestCase):
             ("Item damaged-a deliver pannitaanga, customer support complaint register pannanum", "Tanglish damaged item/complaint"),
             ("Product work aagala, romba mosama irukku", "Tanglish malfunctioning item"),
             ("I received a defective and completely broken item", "English broken/defective product"),
+            ("Vera product vandhuurku. exchange pannanum", "Tanglish wrong product exchange complaint"),
+            ("Vera product vandhuurku. exchange pannanum what", "Tanglish wrong product exchange query"),
         ]
 
         for query, label in complaint_queries:
@@ -96,6 +98,17 @@ class TestAuditCorrections(unittest.TestCase):
                 self.assertEqual(res["triage_verdict"], "ESCALATE_TO_HUMAN")
                 self.assertNotEqual(res["triage_verdict"], "AUTOMATED_RESOLUTION")
                 self.assertIn("complaint", res["draft_reply"].lower())
+
+    def test_tanglish_slang_refund_resolution(self):
+        """Test colloquial Tanglish return/refund slang: 'macha retarin pannu da'."""
+        query = "macha retarin pannu da"
+        res = triage_message(query, self.classifier, confidence_threshold=0.40)
+        self.assertEqual(res["predicted_intent"], "get_refund")
+        self.assertEqual(res["predicted_category"], "REFUND")
+        self.assertEqual(res["detected_language"], "Tanglish")
+        self.assertGreaterEqual(res["confidence"], 0.80)
+        self.assertEqual(res["triage_verdict"], "AUTOMATED_RESOLUTION")
+        self.assertIn("refund", res["draft_reply"].lower())
 
     def test_confidence_threshold_boundaries(self):
         """Verify strict threshold behavior: strictly below (<) must escalate; at or above (>=) must not."""

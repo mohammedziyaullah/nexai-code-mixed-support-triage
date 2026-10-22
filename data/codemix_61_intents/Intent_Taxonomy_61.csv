@@ -1,0 +1,62 @@
+﻿expected_intent,intent_category,example_count,definition
+search_product,Orders & Products,9,Customer support intent: search product
+product_recommendation,Orders & Products,9,Customer support intent: product recommendation
+product_availability,Orders & Products,9,Customer support intent: product availability
+product_price_inquiry,Orders & Products,9,Customer support intent: product price inquiry
+product_comparison,Orders & Products,9,Customer support intent: product comparison
+product_specifications,Orders & Products,9,Customer support intent: product specifications
+product_compatibility,Orders & Products,9,Customer support intent: product compatibility
+cancel_order,Orders & Orders,9,Customer support intent: cancel order
+modify_order_items,Orders & Orders,9,Customer support intent: modify order items
+order_confirmation_missing,Orders & Orders,9,Customer support intent: order confirmation missing
+order_status_inquiry,Orders & Orders,9,Customer support intent: order status inquiry
+track_order,Orders & Delivery,9,Customer support intent: track order
+delivery_fee_inquiry,Orders & Delivery,9,Customer support intent: delivery fee inquiry
+delayed_delivery,Orders & Delivery,9,Customer support intent: delayed delivery
+missing_delivery,Orders & Delivery,9,Customer support intent: missing delivery
+change_shipping_address,Orders & Delivery,9,Customer support intent: change shipping address
+delivery_options,Orders & Delivery,9,Customer support intent: delivery options
+payment_methods_inquiry,Payments & Billing,9,Customer support intent: payment methods inquiry
+payment_failed,Payments & Billing,9,Customer support intent: payment failed
+payment_deducted_order_failed,Payments & Billing,9,Customer support intent: payment deducted order failed
+duplicate_payment,Payments & Billing,9,Customer support intent: duplicate payment
+refund_policy_inquiry,Returns & Refunds,9,Customer support intent: refund policy inquiry
+request_refund,Returns & Refunds,9,Customer support intent: request refund
+refund_status_inquiry,Returns & Refunds,9,Customer support intent: refund status inquiry
+damaged_product_received,Returns & Refunds,9,Customer support intent: damaged product received
+defective_product_received,Returns & Refunds,9,Customer support intent: defective product received
+return_request,Returns & Refunds,9,Customer support intent: return request
+exchange_request,Returns & Refunds,9,Customer support intent: exchange request
+login_issue,Account & Login,9,Customer support intent: login issue
+recover_password,Account & Login,9,Customer support intent: recover password
+otp_not_received,Account & Login,9,Customer support intent: otp not received
+account_locked,Account & Login,9,Customer support intent: account locked
+general_complaint,Complaints & Safety,9,Customer support intent: general complaint
+unresolved_issue,Complaints & Safety,9,Customer support intent: unresolved issue
+request_human_agent,Complaints & Safety,9,Customer support intent: request human agent
+suspected_scam,Security & Privacy,9,Customer support intent: suspected scam
+unauthorized_transaction,Security & Privacy,9,Customer support intent: unauthorized transaction
+privacy_policy_inquiry,Security & Privacy,9,Customer support intent: privacy policy inquiry
+subscription_cancellation,Subscriptions & Membership,9,Customer support intent: subscription cancellation
+loyalty_points_missing,Subscriptions & Membership,9,Customer support intent: loyalty points missing
+greeting,Conversation & Routing,9,Customer support intent: greeting
+gratitude,Conversation & Routing,9,Customer support intent: gratitude
+unclear_message,Conversation & Routing,9,Customer support intent: unclear message
+language_preference,Conversation & Routing,9,Customer support intent: language preference
+wrong_product_received,Returns & Refunds,9,Customer support intent: wrong product received
+missing_item_in_package,Returns & Refunds,9,Customer support intent: missing item in package
+return_pickup_request,Returns & Refunds,9,Customer support intent: return pickup request
+warranty_claim,Returns & Refunds,9,Customer support intent: warranty claim
+promo_code_issue,Payments & Billing,9,Customer support intent: promo code issue
+unexpected_charge,Payments & Billing,9,Customer support intent: unexpected charge
+change_email_address,Account & Login,9,Customer support intent: change email address
+change_phone_number,Account & Login,9,Customer support intent: change phone number
+checkout_error,Technical Support,9,Customer support intent: checkout error
+app_crash,Technical Support,9,Customer support intent: app crash
+notification_issue,Technical Support,9,Customer support intent: notification issue
+escalate_complaint,Complaints & Safety,9,Customer support intent: escalate complaint
+request_supervisor,Complaints & Safety,9,Customer support intent: request supervisor
+suspected_account_hack,Security & Privacy,9,Customer support intent: suspected account hack
+marketing_opt_out,Security & Privacy,9,Customer support intent: marketing opt out
+subscription_signup,Subscriptions & Membership,9,Customer support intent: subscription signup
+contact_customer_service,Conversation & Routing,9,Customer support intent: contact customer service

@@ -13,10 +13,16 @@ EXPECTED_PROJECT_FILES = [
     "src/__init__.py",
     "src/reply_generator.py",
     "src/similarity_retriever.py",
+    "src/train_multilingual.py",
+    "src/train_61_intents.py",
     "tests/__init__.py",
     "data/README.md",
+    "data/intent_expansion_proposal.md",
     "models/README.md",
     "models/candidate_comparison_report.json",
+    "models/candidate_multilingual_eval_report.json",
+    "models/intent_classifier_61.joblib",
+    "models/classifier_61_eval_report.json",
 ]
 
 

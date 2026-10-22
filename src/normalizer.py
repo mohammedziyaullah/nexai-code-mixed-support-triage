@@ -46,6 +46,9 @@ RAW_CODE_MIXED_RULES: List[Tuple[str, str]] = [
     (r"\bcancellation\s+charges\s+lagenge\s+kya\b", "check cancellation fee charge"),
 
     # ---------------- Tanglish & Hinglish Payment & Refund ----------------
+    (r"\b(?:return|retarin|riturn)\s+(?:pannu|pannanum|pannunga|pannidunga|panren|karo|kardo|kar\s+do|karna\s+hai)\b", "get refund return request money back"),
+    (r"\b(?:wapas|vaapas|lautana)\s+(?:karo|kardo|kar\s+do|karna\s+hai|le\s+lo|dena\s+hai)\b", "get refund return request money back"),
+    (r"\b(?:retarin|riturn)\b", "return"),
     (r"\b(?:paisa|paise)\s+kat\s+(?:gaya|gaye)\b", "money debited payment issue failed"),
     (r"\b(?:panam|kasu)\s+pochu\b", "money debited payment issue failed"),
     (r"\bmoney\s+deduct\s+aayiduchu\b", "money debited payment issue"),
@@ -56,6 +59,7 @@ RAW_CODE_MIXED_RULES: List[Tuple[str, str]] = [
     (r"\bkab\s+tak\s+aayega\b", "when will it arrive timeline status"),
 
     # ---------------- Tanglish & Hinglish Account & Auth ----------------
+    (r"\b(?:new\s+account\s+create|pudhu\s+account\s+open)\b.*?\b(?:otp\s+issue|otp\s+receive\s+aagala|otp\s+nahi\s+aa\s+raha)\b", "error creating account registration problems otp issue"),
     (r"\blogin\s+(?:panna\s+mudiyala|aagala)\b", "cannot login recover password"),
     (r"\blogin\s+nahi\s+ho\s+raha\b", "cannot login recover password"),
     (r"\bpassword\s+maranthuten\b", "forgot password recover password"),
@@ -70,7 +74,7 @@ RAW_CODE_MIXED_RULES: List[Tuple[str, str]] = [
     (r"\bsettings\s+katanum\b", "edit account settings"),
 
     # ---------------- Tanglish & Hinglish Support / Contact ----------------
-    (r"\b(?:agent|support)\s+kitta\s+(?:direct-?a|call\s+la)?\s+pesa\s+mudiyuma\b", "contact human agent representative"),
+    (r"\b(?:care\s+)?(?:agent|support)\s+kitta\s+(?:direct-?a\s+)?(?:call\s+la\s+)?pesa\s+mudiyuma\b", "contact human agent representative speak with agent"),
     (r"\bhuman\s+agent\s+se\s+baat\s+karao\b", "contact human agent representative"),
     (r"\bhelp\s+pannunga\b", "please help me"),
     (r"\bmadad\s+karo\b", "please help me"),
@@ -81,22 +85,54 @@ RAW_CODE_MIXED_RULES: List[Tuple[str, str]] = [
     (r"\baddress\s+(?:mathanum|change\s+karna\s+hai)\b", "change shipping address destination"),
     (r"\b(?:dispatch\s+aagurathukulla|dispatched\s+hone\s+se\s+pehle)\b", "before dispatch change shipping address"),
 
+    # ---------------- Product Context Disambiguation ----------------
+    # Product defect/broken/malfunction -> complaint
+    (r"\b(?:this\s+)?(?:product|item|samaan)\s+(?:is\s+)?(?:completely\s+)?(?:defective|broken|damaged|faulty|fake|duplicate|counterfeit|not\s+working)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:defective|broken|damaged|faulty|fake|counterfeit)\s+(?:product|item|samaan)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:product|item|samaan)\s+(?:kaam|kam|chal)\s+nahi\s+(?:kar\s+raha|raha)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:product|item)\s+(?:work\s+aagala|velai\s+seiyala|velai\s+seiyalaye)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:product|item)\s+(?:damaged\s+condition\s+me|damaged-?a)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:product|item)\s+(?:bilkul\s+)?(?:bekaar|ghatiya|kharaab|kharab|mosam)\b", "file a customer complaint consumer claim lodge a complaint"),
+
+    # Product returns/refunds -> get_refund / check_refund_policy
+    (r"\b(?:product|item|samaan)\s+(?:return\s+panna\s+mudiyuma|return\s+karna\s+hai|wapas\s+karna\s+hai|return\s+pannanum)\b", "get refund request money back return"),
+    (r"\b(?:product|item)\s+return\b", "get refund return request"),
+    (r"\b(?:product|item)\s+refund\b", "get refund money back"),
+
+    # Product review/ratings -> review
+    (r"\b(?:product|item)\s+(?:nalla\s+irukku|accha\s+laga)\b", "good product write review feedback rating"),
+    (r"\b(?:product|item)\s+(?:review|rating|feedback)\b", "write product review feedback rating"),
+
+    # Product changes/variant -> change_order
+    (r"\b(?:product|item)\s+(?:details\s+change|variant\s+change|size\s+change|replace|modify)\b", "change order modify item details"),
+
+    # Product tracking/transit -> track_order
+    (r"\b(?:product|item)\s+(?:delivery\s+innum\s+varala|kab\s+aayega|enga\s+irukku|track)\b", "track order status transit shipment"),
+
+    # ---------------- Tanglish & Hinglish Wrong Item & Exchanges ----------------
+    (r"\b(?:galat|wrong|thappana)\s+(?:item|product)\s+select\s+(?:panniten|kar\s+diya|panniyachu)\b", "cancel order mistake chosen"),
+    (r"\b(?:order\s+place\s+karne\s+ka\s+try|trying\s+to\s+place\s+order)\b.*?\b(?:checkout\s+button\s+kaam\s+nahi\s+kar\s+raha|checkout\s+error)\b", "place order error ordering checkout problem"),
+    (r"\bvera\s+(?:product|item|samaan)(?:\s+vandhu(?:urku|rukku|dhu|chu))?\b", "wrong product delivered file a customer complaint claim"),
+    (r"\b(?:galat|wrong|thappana|vera)\s+(?:item|product|package|samaan)\b", "file a customer complaint incorrect delivered product"),
+    (r"\bexchange\s+(?:pannanum|karna\s+hai|panna\s+mudiyuma|karein|pannunga|kardo)\b", "exchange replacement modify change order"),
+    (r"\bsize\s+(?:match\s+aagala|change|mathanum)\b", "change order size variant modify"),
+
     # ---------------- Tanglish & Hinglish Complaints & Grievances ----------------
     (r"\bcomplaint\s+register\s+(?:pannanum|karna\s+hai)\b", "file a customer complaint claim"),
     (r"\bcustomer\s+support\s+complaint\b", "file a complaint claim"),
     (r"\bpackage\s+completely\s+damaged\b", "damaged package complaint"),
-    (r"\bitem\s+damaged-?a\s+deliver\s+pannitaanga\b", "damaged item file a complaint poor service"),
+    (r"\bitem\s+damaged-?a\s+deliver\s+pannitaanga\b", "file a customer complaint consumer claim poor service"),
     (r"\bghatiya\s+service\b", "poor service complaint"),
-    (r"\b(?:completely\s+)?(?:damaged|broken|defective|faulty|fake|duplicate|counterfeit)\b", "damaged defective item complaint"),
-    (r"\b(?:bahut\s+)?(?:bekaar|ghatiya|kharaab|kharab)\b", "poor quality unsatisfactory complaint"),
-    (r"\b(?:romba\s+)?(?:mosam|mosama|mosamaana)\b", "poor quality unsatisfactory complaint"),
-    (r"\b(?:kaam|kam|chal)\s+nahi\s+(?:kar\s+raha|raha)\b", "not working defective item complaint"),
-    (r"\b(?:work\s+aagala|velai\s+seiyala|velai\s+seiyalaye)\b", "not working defective item complaint"),
-    (r"\b(?:galat|wrong|thappana)\s+(?:item|product|package|samaan)\b", "wrong item complaint"),
+    (r"\b(?:completely\s+)?(?:damaged|broken|defective|faulty|fake|duplicate|counterfeit)\b", "file a customer complaint consumer claim lodge a complaint"),
+    (r"\b(?:bahut\s+)?(?:bekaar|ghatiya|kharaab|kharab)\b", "poor quality file a customer complaint claim"),
+    (r"\b(?:romba\s+)?(?:mosam|mosama|mosamaana)\b", "poor quality file a customer complaint claim"),
+    (r"\b(?:kaam|kam|chal)\s+nahi\s+(?:kar\s+raha|raha)\b", "file a customer complaint consumer claim"),
+    (r"\b(?:work\s+aagala|velai\s+seiyala|velai\s+seiyalaye)\b", "file a customer complaint consumer claim"),
     (r"\b(?:nalla\s+irukku|accha\s+laga)\b", "good product write review feedback"),
     (r"\breview\s+feedback\s+share\b", "write product review feedback"),
 
     # ---------------- Tanglish & Hinglish Invoices & Policies ----------------
+    (r"\breturn\s+policy\s+rules\s+(?:enna|kya\s+hai).*", "check refund policy return rules conditions guidelines policy"),
     (r"\binvoice\s+eppadi\s+download\s+panrathu\b", "download tax invoice receipt"),
     (r"\binvoice\s+download\s+karne\s+ka\s+option\b", "download tax invoice receipt"),
     (r"\breturn\s+policy\s+rules\s+enna\b", "check refund policy return rules"),

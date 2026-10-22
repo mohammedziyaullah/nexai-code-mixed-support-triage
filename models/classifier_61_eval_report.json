@@ -1,0 +1,392 @@
+{
+  "model_type": "TF-IDF + Multinomial Logistic Regression (61 Intents)",
+  "total_intents": 61,
+  "total_categories": 11,
+  "train_samples": 439,
+  "test_samples": 110,
+  "test_accuracy": 0.6818,
+  "test_macro_f1": 0.6126,
+  "test_weighted_f1": 0.628,
+  "per_language_test": {
+    "English": {
+      "samples": 39,
+      "accuracy": 0.6667
+    },
+    "Tanglish": {
+      "samples": 33,
+      "accuracy": 0.6667
+    },
+    "Hinglish": {
+      "samples": 38,
+      "accuracy": 0.7105
+    }
+  },
+  "intent_taxonomy": [
+    {
+      "expected_intent": "search_product",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: search product"
+    },
+    {
+      "expected_intent": "product_recommendation",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product recommendation"
+    },
+    {
+      "expected_intent": "product_availability",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product availability"
+    },
+    {
+      "expected_intent": "product_price_inquiry",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product price inquiry"
+    },
+    {
+      "expected_intent": "product_comparison",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product comparison"
+    },
+    {
+      "expected_intent": "product_specifications",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product specifications"
+    },
+    {
+      "expected_intent": "product_compatibility",
+      "intent_category": "Orders & Products",
+      "example_count": 9,
+      "definition": "Customer support intent: product compatibility"
+    },
+    {
+      "expected_intent": "cancel_order",
+      "intent_category": "Orders & Orders",
+      "example_count": 9,
+      "definition": "Customer support intent: cancel order"
+    },
+    {
+      "expected_intent": "modify_order_items",
+      "intent_category": "Orders & Orders",
+      "example_count": 9,
+      "definition": "Customer support intent: modify order items"
+    },
+    {
+      "expected_intent": "order_confirmation_missing",
+      "intent_category": "Orders & Orders",
+      "example_count": 9,
+      "definition": "Customer support intent: order confirmation missing"
+    },
+    {
+      "expected_intent": "order_status_inquiry",
+      "intent_category": "Orders & Orders",
+      "example_count": 9,
+      "definition": "Customer support intent: order status inquiry"
+    },
+    {
+      "expected_intent": "track_order",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: track order"
+    },
+    {
+      "expected_intent": "delivery_fee_inquiry",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: delivery fee inquiry"
+    },
+    {
+      "expected_intent": "delayed_delivery",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: delayed delivery"
+    },
+    {
+      "expected_intent": "missing_delivery",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: missing delivery"
+    },
+    {
+      "expected_intent": "change_shipping_address",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: change shipping address"
+    },
+    {
+      "expected_intent": "delivery_options",
+      "intent_category": "Orders & Delivery",
+      "example_count": 9,
+      "definition": "Customer support intent: delivery options"
+    },
+    {
+      "expected_intent": "payment_methods_inquiry",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: payment methods inquiry"
+    },
+    {
+      "expected_intent": "payment_failed",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: payment failed"
+    },
+    {
+      "expected_intent": "payment_deducted_order_failed",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: payment deducted order failed"
+    },
+    {
+      "expected_intent": "duplicate_payment",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: duplicate payment"
+    },
+    {
+      "expected_intent": "refund_policy_inquiry",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: refund policy inquiry"
+    },
+    {
+      "expected_intent": "request_refund",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: request refund"
+    },
+    {
+      "expected_intent": "refund_status_inquiry",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: refund status inquiry"
+    },
+    {
+      "expected_intent": "damaged_product_received",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: damaged product received"
+    },
+    {
+      "expected_intent": "defective_product_received",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: defective product received"
+    },
+    {
+      "expected_intent": "return_request",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: return request"
+    },
+    {
+      "expected_intent": "exchange_request",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: exchange request"
+    },
+    {
+      "expected_intent": "login_issue",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: login issue"
+    },
+    {
+      "expected_intent": "recover_password",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: recover password"
+    },
+    {
+      "expected_intent": "otp_not_received",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: otp not received"
+    },
+    {
+      "expected_intent": "account_locked",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: account locked"
+    },
+    {
+      "expected_intent": "general_complaint",
+      "intent_category": "Complaints & Safety",
+      "example_count": 9,
+      "definition": "Customer support intent: general complaint"
+    },
+    {
+      "expected_intent": "unresolved_issue",
+      "intent_category": "Complaints & Safety",
+      "example_count": 9,
+      "definition": "Customer support intent: unresolved issue"
+    },
+    {
+      "expected_intent": "request_human_agent",
+      "intent_category": "Complaints & Safety",
+      "example_count": 9,
+      "definition": "Customer support intent: request human agent"
+    },
+    {
+      "expected_intent": "suspected_scam",
+      "intent_category": "Security & Privacy",
+      "example_count": 9,
+      "definition": "Customer support intent: suspected scam"
+    },
+    {
+      "expected_intent": "unauthorized_transaction",
+      "intent_category": "Security & Privacy",
+      "example_count": 9,
+      "definition": "Customer support intent: unauthorized transaction"
+    },
+    {
+      "expected_intent": "privacy_policy_inquiry",
+      "intent_category": "Security & Privacy",
+      "example_count": 9,
+      "definition": "Customer support intent: privacy policy inquiry"
+    },
+    {
+      "expected_intent": "subscription_cancellation",
+      "intent_category": "Subscriptions & Membership",
+      "example_count": 9,
+      "definition": "Customer support intent: subscription cancellation"
+    },
+    {
+      "expected_intent": "loyalty_points_missing",
+      "intent_category": "Subscriptions & Membership",
+      "example_count": 9,
+      "definition": "Customer support intent: loyalty points missing"
+    },
+    {
+      "expected_intent": "greeting",
+      "intent_category": "Conversation & Routing",
+      "example_count": 9,
+      "definition": "Customer support intent: greeting"
+    },
+    {
+      "expected_intent": "gratitude",
+      "intent_category": "Conversation & Routing",
+      "example_count": 9,
+      "definition": "Customer support intent: gratitude"
+    },
+    {
+      "expected_intent": "unclear_message",
+      "intent_category": "Conversation & Routing",
+      "example_count": 9,
+      "definition": "Customer support intent: unclear message"
+    },
+    {
+      "expected_intent": "language_preference",
+      "intent_category": "Conversation & Routing",
+      "example_count": 9,
+      "definition": "Customer support intent: language preference"
+    },
+    {
+      "expected_intent": "wrong_product_received",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: wrong product received"
+    },
+    {
+      "expected_intent": "missing_item_in_package",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: missing item in package"
+    },
+    {
+      "expected_intent": "return_pickup_request",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: return pickup request"
+    },
+    {
+      "expected_intent": "warranty_claim",
+      "intent_category": "Returns & Refunds",
+      "example_count": 9,
+      "definition": "Customer support intent: warranty claim"
+    },
+    {
+      "expected_intent": "promo_code_issue",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: promo code issue"
+    },
+    {
+      "expected_intent": "unexpected_charge",
+      "intent_category": "Payments & Billing",
+      "example_count": 9,
+      "definition": "Customer support intent: unexpected charge"
+    },
+    {
+      "expected_intent": "change_email_address",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: change email address"
+    },
+    {
+      "expected_intent": "change_phone_number",
+      "intent_category": "Account & Login",
+      "example_count": 9,
+      "definition": "Customer support intent: change phone number"
+    },
+    {
+      "expected_intent": "checkout_error",
+      "intent_category": "Technical Support",
+      "example_count": 9,
+      "definition": "Customer support intent: checkout error"
+    },
+    {
+      "expected_intent": "app_crash",
+      "intent_category": "Technical Support",
+      "example_count": 9,
+      "definition": "Customer support intent: app crash"
+    },
+    {
+      "expected_intent": "notification_issue",
+      "intent_category": "Technical Support",
+      "example_count": 9,
+      "definition": "Customer support intent: notification issue"
+    },
+    {
+      "expected_intent": "escalate_complaint",
+      "intent_category": "Complaints & Safety",
+      "example_count": 9,
+      "definition": "Customer support intent: escalate complaint"
+    },
+    {
+      "expected_intent": "request_supervisor",
+      "intent_category": "Complaints & Safety",
+      "example_count": 9,
+      "definition": "Customer support intent: request supervisor"
+    },
+    {
+      "expected_intent": "suspected_account_hack",
+      "intent_category": "Security & Privacy",
+      "example_count": 9,
+      "definition": "Customer support intent: suspected account hack"
+    },
+    {
+      "expected_intent": "marketing_opt_out",
+      "intent_category": "Security & Privacy",
+      "example_count": 9,
+      "definition": "Customer support intent: marketing opt out"
+    },
+    {
+      "expected_intent": "subscription_signup",
+      "intent_category": "Subscriptions & Membership",
+      "example_count": 9,
+      "definition": "Customer support intent: subscription signup"
+    },
+    {
+      "expected_intent": "contact_customer_service",
+      "intent_category": "Conversation & Routing",
+      "example_count": 9,
+      "definition": "Customer support intent: contact customer service"
+    }
+  ]
+}
